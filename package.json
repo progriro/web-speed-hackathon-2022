@@ -60,7 +60,6 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "bezier-easing": "^2.1.0",
     "dayjs": "^1.11.4",
     "fastify": "^3.25.3",
     "fastify-sensible": "^3.1.2",
