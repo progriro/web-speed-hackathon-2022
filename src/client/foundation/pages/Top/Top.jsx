@@ -109,7 +109,7 @@ export const Top = ({ date = dayjs().format("YYYY-MM-DD") }) => {
     }
   `;
 
-  const chargeDialogRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { data: userData, revalidate } = useAuthorizedFetch(
     "/api/users/me",
@@ -119,11 +119,11 @@ export const Top = ({ date = dayjs().format("YYYY-MM-DD") }) => {
   const { data: raceData } = useFetch("/api/races", jsonFetcher);
 
   const handleClickChargeButton = useCallback(() => {
-    if (chargeDialogRef.current === null) {
-      return;
-    }
+    setIsOpen(true);
+  }, []);
 
-    chargeDialogRef.current.showModal();
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
   }, []);
 
   const handleCompleteCharge = useCallback(() => {
@@ -174,7 +174,11 @@ export const Top = ({ date = dayjs().format("YYYY-MM-DD") }) => {
         )}
       </section>
 
-      <ChargeDialog ref={chargeDialogRef} onComplete={handleCompleteCharge} />
+      <ChargeDialog
+        isOpen={isOpen}
+        onClose={handleClose}
+        onComplete={handleCompleteCharge}
+      />
     </Container>
   );
 };

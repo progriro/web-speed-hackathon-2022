@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import React, { forwardRef, useCallback, useState } from "react";
-import zenginCode from "zengin-code";
 
 import { Dialog } from "../../../../components/layouts/Dialog";
 import { Spacer } from "../../../../components/layouts/Spacer";
@@ -17,8 +16,9 @@ const CHARGE = "charge";
  * @type {object}
  */
 
-/** @type {React.ForwardRefExoticComponent<{Props>} */
-export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
+/** @type {React.VFC<Props>} */
+export const ChargeDialog = forwardRef(({ isOpen, onClose, onComplete }) => {
+  const [zenginCode, setZenginCode] = useState({});
   const [bankCode, setBankCode] = useState("");
   const [branchCode, setBranchCode] = useState("");
   const [accountNo, setAccountNo] = useState("");
@@ -57,14 +57,25 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
     async (e) => {
       if (e.currentTarget.returnValue === CANCEL) {
         clearForm();
+        onClose();
         return;
       }
 
       await charge({ accountNo, amount, bankCode, branchCode });
       clearForm();
       onComplete();
+      onClose();
     },
-    [charge, bankCode, branchCode, accountNo, amount, onComplete, clearForm],
+    [
+      charge,
+      accountNo,
+      amount,
+      bankCode,
+      branchCode,
+      clearForm,
+      onClose,
+      onComplete,
+    ],
   );
 
   const bankList = Object.entries(zenginCode).map(([code, { name }]) => ({
@@ -75,7 +86,11 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
   const branch = bank?.branches[branchCode];
 
   return (
-    <Dialog ref={ref} onClose={handleCloseDialog}>
+    <Dialog
+      isOpen={isOpen}
+      onClose={handleCloseDialog}
+      setZenginCode={setZenginCode}
+    >
       <section>
         <Heading as="h1">チャージ</Heading>
 

@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { Color } from "../../../styles/variables";
@@ -14,16 +14,38 @@ const StyledDialog = styled.dialog`
 /**
  * @typedef Props
  * @type {object}
+ * @property {boolean} isOpen
  * @property {Function} onClose
+ * @property {Function} setZenginCode
  */
 
-/** @type {React.ForwardRefExoticComponent<{Props>} */
-export const Dialog = forwardRef(({ children, onClose }, ref) => {
+/** @type {React.FC<Props>} */
+export const Dialog = ({ children, isOpen, onClose, setZenginCode }) => {
+  const dialogRef = React.useRef();
+
+  React.useEffect(() => {
+    if (!dialogRef.current) return;
+
+    if (isOpen) {
+      // @see https://developer.mozilla.org/ja/docs/Web/HTML/Element/dialog
+      dialogRef.current.showModal();
+      import("zengin-code")
+        .then((zenginCode) => {
+          setZenginCode(zenginCode);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      dialogRef.current.close();
+    }
+  }, [isOpen, setZenginCode]);
+
   return (
-    <StyledDialog ref={ref} onClose={onClose}>
+    <StyledDialog ref={dialogRef} onClose={onClose}>
       {children}
     </StyledDialog>
   );
-});
+};
 
 Dialog.displayName = "Dialog";
