@@ -1,5 +1,5 @@
+import dayjs from "dayjs";
 import { difference, slice } from "lodash-es";
-import moment from "moment-timezone";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -97,7 +97,7 @@ function useHeroImage(todayRaces) {
 }
 
 /** @type {React.VFC} */
-export const Top = ({ date = moment().format("YYYY-MM-DD") }) => {
+export const Top = ({ date = dayjs().format("YYYY-MM-DD") }) => {
   const ChargeButton = styled.button`
     background: ${Color.mono[700]};
     border-radius: ${Radius.MEDIUM};
@@ -135,7 +135,7 @@ export const Top = ({ date = moment().format("YYYY-MM-DD") }) => {
       ? [...raceData.races]
           .sort(
             (/** @type {Model.Race} */ a, /** @type {Model.Race} */ b) =>
-              moment(a.startAt) - moment(b.startAt),
+              dayjs(a.startAt) - dayjs(b.startAt),
           )
           .filter((/** @type {Model.Race} */ race) =>
             isSameDay(race.startAt, date),

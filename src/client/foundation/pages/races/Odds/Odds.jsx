@@ -1,4 +1,4 @@
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -59,7 +59,7 @@ export const Odds = ({ raceId }) => {
     return <Container>Loading...</Container>;
   }
 
-  const isRaceClosed = moment(data.closeAt).isBefore(new Date());
+  const isRaceClosed = dayjs(data.closeAt).isBefore(new Date());
 
   return (
     <Container>
