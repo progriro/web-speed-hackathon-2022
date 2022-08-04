@@ -39,6 +39,16 @@ module.exports = [
           use: {
             loader: "babel-loader",
             options: {
+              plugins: [
+                [
+                  "babel-plugin-styled-components",
+                  {
+                    minify: true,
+                    pure: true,
+                    transpileTemplateLiterals: true,
+                  },
+                ],
+              ],
               presets: [
                 [
                   "@babel/preset-env",
