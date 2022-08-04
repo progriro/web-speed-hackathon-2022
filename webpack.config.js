@@ -4,6 +4,7 @@ const path = require("path");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Zopfli = require("node-zopfli");
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const nodeExternals = require("webpack-node-externals");
@@ -88,9 +89,11 @@ module.exports = [
         template: path.resolve(SRC_ROOT, "./client", "./index.html"),
       }),
       new CompressionPlugin({
-        algorithm: "brotliCompress",
+        algorithm(input, compressionOptions, callback) {
+          return Zopfli.gzip(input, compressionOptions, callback);
+        },
         compressionOptions: { level: 9 },
-        test: /\.js?$/,
+        test: /\.js$/,
       }),
       new BundleAnalyzerPlugin(),
     ],
