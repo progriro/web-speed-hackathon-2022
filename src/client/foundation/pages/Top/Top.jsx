@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 
 import { Container } from "../../components/layouts/Container";
@@ -85,7 +85,9 @@ export const Top = ({ date = dayjs().format("YYYY-MM-DD") }) => {
 
   return (
     <Container>
-      {heroImageUrl !== null && <HeroImage url={heroImageUrl} />}
+      <div style={{ aspectRatio: "auto 1024 / 735", backgroundColor: "#fff" }}>
+        {heroImageUrl && <HeroImage url={heroImageUrl} />}
+      </div>
 
       <Spacer mt={Space * 2} />
       {userData && (
