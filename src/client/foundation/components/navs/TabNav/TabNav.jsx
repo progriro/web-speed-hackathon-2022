@@ -1,4 +1,3 @@
-import { Link } from "preact-router/match";
 import React from "react";
 import styled from "styled-components";
 
@@ -11,9 +10,11 @@ import { Stack } from "../../layouts/Stack";
  */
 
 const ItemWrapper = styled.li`
-  a {
+  button {
+    background: white;
     border: 1px solid ${Color.mono[400]};
     border-radius: ${Radius.MEDIUM};
+    cursor: pointer;
     display: block;
     font-weight: bold;
     padding-bottom: ${Space * 1}px;
@@ -25,9 +26,10 @@ const ItemWrapper = styled.li`
       border-color: ${Color.mono[600]};
     }
 
-    &[aria-current] {
+    &[aria-current="true"] {
       background: ${Color.mono[900]};
       color: ${Color.mono[0]};
+      cursor: text;
     }
 
     @media (min-width: ${BreakPoint.TABLET}px) {
@@ -37,17 +39,17 @@ const ItemWrapper = styled.li`
 `;
 
 /** @type {React.FC<ItemProps & React.AnchorHTMLAttributes>} */
-const Item = ({ "aria-current": ariaCurrent, children, to, ...rest }) => {
+const Item = ({ "aria-current": ariaCurrent, children, onClick, ...rest }) => {
   return (
     <ItemWrapper>
       {ariaCurrent ? (
-        <a aria-current {...rest}>
+        <button aria-current {...rest}>
           {children}
-        </a>
+        </button>
       ) : (
-        <Link aria-current={ariaCurrent} href={to} {...rest}>
+        <button aria-current={ariaCurrent} onClick={onClick} {...rest}>
           {children}
-        </Link>
+        </button>
       )}
     </ItemWrapper>
   );
@@ -62,4 +64,5 @@ export const TabNav = ({ children }) => {
     </nav>
   );
 };
+
 TabNav.Item = Item;

@@ -1,4 +1,5 @@
-import React from "react";
+// import { route } from "preact-router";
+import React, { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 
 import { Container } from "../../../components/layouts/Container";
@@ -6,15 +7,18 @@ import { Section } from "../../../components/layouts/Section";
 import { Spacer } from "../../../components/layouts/Spacer";
 import { TrimmedImage } from "../../../components/media/TrimmedImage";
 import { TabNav } from "../../../components/navs/TabNav";
+const Odds = React.lazy(() => import("../../../components/tabs/Odds"));
+const RaceCard = React.lazy(() => import("../../../components/tabs/RaceCard"));
+const RaceResult = React.lazy(() =>
+  import("../../../components/tabs/RaceResult"),
+);
+// import RaceCard from "../../../components/tabs/RaceCard";
+// import RaceResult from "../../../components/tabs/RaceResult";
 import { Heading } from "../../../components/typographies/Heading";
-import { useAuthorizedFetch } from "../../../hooks/useAuthorizedFetch";
 import { useFetch } from "../../../hooks/useFetch";
 import { Color, Radius, Space } from "../../../styles/variables";
 import { formatTime } from "../../../utils/DateUtils";
-import { authorizedJsonFetcher, jsonFetcher } from "../../../utils/HttpUtils";
-
-import { BettingTicketList } from "./internal/BettingTicketList";
-import { RaceResultSection } from "./internal/RaceResultSection";
+import { jsonFetcher } from "../../../utils/HttpUtils";
 
 const LiveBadge = styled.span`
   background: ${Color.red};
@@ -25,13 +29,23 @@ const LiveBadge = styled.span`
   text-transform: uppercase;
 `;
 
+// eslint-disable-next-line sort/object-properties
+const TAB_NAME = { "race-card": "出走表", odds: "オッズ", result: "結果" };
+
 /** @type {React.VFC} */
-export const RaceResult = ({ raceId }) => {
+export const Race = ({ raceId }) => {
   const { data } = useFetch(`/api/races/${raceId}`, jsonFetcher);
-  const { data: ticketData } = useAuthorizedFetch(
-    `/api/races/${raceId}/betting-tickets`,
-    authorizedJsonFetcher,
-  );
+
+  const initialTab = useMemo(() => {
+    return location.pathname.split("/").at(-1);
+  }, []);
+
+  const [tab, setTab] = useState(initialTab);
+
+  const handleClick = useCallback((tab) => {
+    setTab(tab);
+    // route(`/races/${raceId}/${tab}`, false);
+  }, []);
 
   if (data == null) {
     return <Container>Loading...</Container>;
@@ -57,28 +71,22 @@ export const RaceResult = ({ raceId }) => {
 
       <Section>
         <TabNav>
-          <TabNav.Item to={`/races/${raceId}/race-card`}>出走表</TabNav.Item>
-          <TabNav.Item to={`/races/${raceId}/odds`}>オッズ</TabNav.Item>
-          <TabNav.Item aria-current to={`/races/${raceId}/result`}>
-            結果
-          </TabNav.Item>
+          {Object.keys(TAB_NAME).map((key, index) => (
+            <TabNav.Item
+              key={index}
+              aria-current={key === tab}
+              onClick={() => handleClick(key)}
+            >
+              {TAB_NAME[key]}
+            </TabNav.Item>
+          ))}
         </TabNav>
 
-        <Spacer mt={Space * 4} />
-        <Heading as="h2">購入した買い目</Heading>
-
-        <Spacer mt={Space * 2} />
-        <BettingTicketList>
-          {(ticketData?.bettingTickets ?? []).map((ticket) => (
-            <BettingTicketList.Item key={ticket.id} ticket={ticket} />
-          ))}
-        </BettingTicketList>
-
-        <Spacer mt={Space * 4} />
-        <Heading as="h2">勝負結果</Heading>
-
-        <Spacer mt={Space * 2} />
-        <RaceResultSection />
+        <React.Suspense fallback={<></>}>
+          {tab === "race-card" && <RaceCard raceId={raceId} />}
+          {tab === "odds" && <Odds raceId={raceId} />}
+          {tab === "result" && <RaceResult raceId={raceId} />}
+        </React.Suspense>
       </Section>
     </Container>
   );
