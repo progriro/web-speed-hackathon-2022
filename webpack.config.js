@@ -42,8 +42,10 @@ module.exports = [
                 [
                   "@babel/preset-env",
                   {
-                    modules: "cjs",
-                    spec: true,
+                    bugfixes: true,
+                    corejs: "3",
+                    loose: true,
+                    useBuiltIns: "usage",
                   },
                 ],
                 "@babel/preset-react",
