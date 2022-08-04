@@ -68,7 +68,6 @@
     "dayjs": "^1.11.4",
     "fastify": "^3.25.3",
     "fastify-sensible": "^3.1.2",
-    "framer-motion": "^6.2.8",
     "lodash-es": "^4.17.21",
     "modern-css-reset": "^1.4.0",
     "preact": "^10.10.0",
