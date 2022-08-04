@@ -77,6 +77,13 @@ module.exports = [
       new BundleAnalyzerPlugin(),
     ],
     resolve: {
+      alias: {
+        react: "preact/compat",
+        // eslint-disable-next-line sort/object-properties
+        "react-dom/test-utils": "preact/test-utils",
+        "react-dom": "preact/compat",
+        "react/jsx-runtime": "preact/jsx-runtime",
+      },
       extensions: [".js", ".jsx"],
     },
     target: "web",
