@@ -47,10 +47,8 @@ export const apiRoute = async (fastify) => {
   });
 
   fastify.get("/races", async (req, res) => {
-    const since =
-      req.query.since != null ? dayjs.unix(req.query.since) : undefined;
-    const until =
-      req.query.until != null ? dayjs.unix(req.query.until) : undefined;
+    const since = req.query.since != null ? dayjs(req.query.since) : undefined;
+    const until = req.query.until != null ? dayjs(req.query.until) : undefined;
 
     if (since != null && !since.isValid()) {
       throw fastify.httpErrors.badRequest();

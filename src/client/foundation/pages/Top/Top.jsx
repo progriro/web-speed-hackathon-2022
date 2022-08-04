@@ -106,9 +106,9 @@ export const Top = ({ date = dayjs().format("YYYY-MM-DD") }) => {
       <Spacer mt={Space * 2} />
       <section>
         <Heading as="h1">本日のレース</Heading>
-        {raceData && raceData.races.length > 0 && (
+        {todayRaces && todayRaces.length > 0 && (
           <RecentRaceList>
-            {raceData.races.map((race, i) => (
+            {todayRaces.map((race, i) => (
               <RecentRaceList.Item key={race.id} index={i} race={race} />
             ))}
           </RecentRaceList>
