@@ -1,5 +1,4 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { Container } from "../../../components/layouts/Container";
@@ -27,8 +26,7 @@ const LiveBadge = styled.span`
 `;
 
 /** @type {React.VFC} */
-export const RaceResult = () => {
-  const { raceId } = useParams();
+export const RaceResult = ({ raceId }) => {
   const { data } = useFetch(`/api/races/${raceId}`, jsonFetcher);
   const { data: ticketData } = useAuthorizedFetch(
     `/api/races/${raceId}/betting-tickets`,

@@ -1,5 +1,5 @@
+import { Link } from "preact-router/match";
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { BreakPoint, Color, Radius, Space } from "../../../styles/variables";
@@ -45,7 +45,7 @@ const Item = ({ "aria-current": ariaCurrent, children, to, ...rest }) => {
           {children}
         </a>
       ) : (
-        <Link aria-current={ariaCurrent} to={to} {...rest}>
+        <Link aria-current={ariaCurrent} href={to} {...rest}>
           {children}
         </Link>
       )}

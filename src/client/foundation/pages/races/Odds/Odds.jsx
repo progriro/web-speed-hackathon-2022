@@ -1,6 +1,5 @@
 import moment from "moment-timezone";
 import React, { useCallback, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { Container } from "../../../components/layouts/Container";
@@ -40,8 +39,7 @@ const Callout = styled.aside`
 `;
 
 /** @type {React.VFC} */
-export const Odds = () => {
-  const { raceId } = useParams();
+export const Odds = ({ raceId }) => {
   const { data } = useFetch(`/api/races/${raceId}`, jsonFetcher);
   const [oddsKeyToBuy, setOddsKeyToBuy] = useState(null);
   const modalRef = useRef(null);

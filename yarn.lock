@@ -1268,7 +1268,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.8.4":
   version: 7.17.2
   resolution: "@babel/runtime@npm:7.17.2"
   dependencies:
@@ -4751,15 +4751,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"history@npm:^5.2.0":
-  version: 5.3.0
-  resolution: "history@npm:5.3.0"
-  dependencies:
-    "@babel/runtime": ^7.7.6
-  checksum: d73c35df49d19ac172f9547d30a21a26793e83f16a78386d99583b5bf1429cc980799fcf1827eb215d31816a6600684fba9686ce78104e23bd89ec239e7c726f
-  languageName: node
-  linkType: hard
-
 "hoist-non-react-statics@npm:^3.0.0, hoist-non-react-statics@npm:^3.3.0":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
@@ -6956,6 +6947,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact-async-route@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "preact-async-route@npm:2.2.1"
+  checksum: 81c3f55235166f29ba88d61e6b116da2268dbb90af1c86446de9dcbf509d9481d6c248acae3944502e71904e7285e8da80d761b2a469adb5e35c3b94d465a36e
+  languageName: node
+  linkType: hard
+
+"preact-router@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "preact-router@npm:4.1.0"
+  peerDependencies:
+    preact: ">=10"
+  checksum: 5cde4340dd92562bbc9b6370471846a4ba11bc3678238fc68abfdad10bb3bdaf7e6379c281dfabbf220a7213670d74a6fc167abecee80ec1771f566316df2c2c
+  languageName: node
+  linkType: hard
+
 "preact@npm:^10.10.0":
   version: 10.10.0
   resolution: "preact@npm:10.10.0"
@@ -7171,30 +7178,6 @@ __metadata:
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
-  languageName: node
-  linkType: hard
-
-"react-router-dom@npm:6":
-  version: 6.2.2
-  resolution: "react-router-dom@npm:6.2.2"
-  dependencies:
-    history: ^5.2.0
-    react-router: 6.2.2
-  peerDependencies:
-    react: ">=16.8"
-    react-dom: ">=16.8"
-  checksum: 83c5105af923c4f8af65a6de98283a95f46ffa643fd0c1a5005647c2c3deb946dae52dda32dc00cfcc3659517b08be806ff02ff03173361dba3d824850053e99
-  languageName: node
-  linkType: hard
-
-"react-router@npm:6.2.2":
-  version: 6.2.2
-  resolution: "react-router@npm:6.2.2"
-  dependencies:
-    history: ^5.2.0
-  peerDependencies:
-    react: ">=16.8"
-  checksum: 1a2e7006d4d56bfae8ff11dd5ec15e8049578864dfb2764652510eb0ce4af26a8949790a3732c4f7beb14bcb6500469ea18841b8cfc953e09828e4e4113922f0
   languageName: node
   linkType: hard
 
@@ -9081,9 +9064,10 @@ __metadata:
     npm-run-all: ^4.1.5
     postcss-syntax: ^0.36.2
     preact: ^10.10.0
+    preact-async-route: ^2.2.1
+    preact-router: ^4.1.0
     prettier: ^2.5.1
     react-helmet: ^6.1.0
-    react-router-dom: 6
     rimraf: ^3.0.2
     sqlite3: ^5.0.2
     styled-components: ^5.3.3

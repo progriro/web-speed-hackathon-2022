@@ -1,5 +1,5 @@
+import { Link } from "preact-router/match";
 import React, { useCallback } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { useAuth, useRegister } from "../../../contexts/AuthContext";
@@ -50,7 +50,7 @@ export const Header = () => {
   return (
     <Wrapper>
       <NameText>
-        <Link to="/">CyberTicket</Link>
+        <Link href="/">CyberTicket</Link>
       </NameText>
 
       {loggedIn ? (

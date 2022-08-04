@@ -1,25 +1,43 @@
+import AsyncRoute from "preact-async-route";
+// eslint-disable-next-line import/no-named-as-default
+import Router from "preact-router";
 import React from "react";
-import { Route, Routes as RouterRoutes } from "react-router-dom";
 
-import { CommonLayout } from "./layouts/CommonLayout";
 import { Top } from "./pages/Top";
-import { Odds } from "./pages/races/Odds";
-import { RaceCard } from "./pages/races/RaceCard";
-import { RaceResult } from "./pages/races/RaceResult";
 
 /** @type {React.VFC} */
 export const Routes = () => {
+  const onChange = React.useCallback(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <RouterRoutes>
-      <Route element={<CommonLayout />} path="/">
-        <Route index element={<Top />} />
-        <Route element={<Top />} path=":date" />
-        <Route path="races/:raceId">
-          <Route element={<RaceCard />} path="race-card" />
-          <Route element={<Odds />} path="odds" />
-          <Route element={<RaceResult />} path="result" />
-        </Route>
-      </Route>
-    </RouterRoutes>
+    <Router onChange={onChange}>
+      <Top path="/" />
+      <AsyncRoute
+        getComponent={() =>
+          import("./pages/Top").then((module) => module.default)
+        }
+        path="/:date"
+      />
+      <AsyncRoute
+        getComponent={() =>
+          import("./pages/races/Odds").then((module) => module.default)
+        }
+        path="/races/:raceId/odds"
+      />
+      <AsyncRoute
+        getComponent={() =>
+          import("./pages/races/RaceCard").then((module) => module.default)
+        }
+        path="/races/:raceId/race-card"
+      />
+      <AsyncRoute
+        getComponent={() =>
+          import("./pages/races/RaceResult").then((module) => module.default)
+        }
+        path="/races/:raceId/result"
+      />
+    </Router>
   );
 };

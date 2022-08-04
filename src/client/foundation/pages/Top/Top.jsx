@@ -1,7 +1,6 @@
 import { difference, slice } from "lodash-es";
 import moment from "moment-timezone";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { Container } from "../../components/layouts/Container";
@@ -98,9 +97,7 @@ function useHeroImage(todayRaces) {
 }
 
 /** @type {React.VFC} */
-export const Top = () => {
-  const { date = moment().format("YYYY-MM-DD") } = useParams();
-
+export const Top = ({ date = moment().format("YYYY-MM-DD") }) => {
   const ChargeButton = styled.button`
     background: ${Color.mono[700]};
     border-radius: ${Radius.MEDIUM};

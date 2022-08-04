@@ -1,5 +1,5 @@
+import { Link } from "preact-router/match";
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { BreakPoint, Color, FontSize, Space } from "../../../styles/variables";
@@ -65,7 +65,7 @@ export const Footer = () => {
       </List>
 
       <NameText>
-        <Link to="/">CyberTicket</Link>
+        <Link href="/">CyberTicket</Link>
       </NameText>
 
       <WarningText>

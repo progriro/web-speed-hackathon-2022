@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 import { BreakPoint, Space } from "../../../styles/variables";
+import { Footer } from "../../navs/Footer";
+import { Header } from "../../navs/Header";
 
 const Wrapper = styled.div`
   margin-left: auto;
@@ -19,5 +21,15 @@ const Wrapper = styled.div`
 
 /** @type {React.FC} */
 export const Container = ({ children }) => {
-  return <Wrapper>{children}</Wrapper>;
+  return (
+    <div>
+      <Header />
+
+      <main>
+        <Wrapper>{children}</Wrapper>
+      </main>
+
+      <Footer />
+    </div>
+  );
 };
