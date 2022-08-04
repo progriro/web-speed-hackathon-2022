@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 
+const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BundleAnalyzerPlugin =
@@ -85,6 +86,11 @@ module.exports = [
       new HtmlWebpackPlugin({
         inject: true,
         template: path.resolve(SRC_ROOT, "./client", "./index.html"),
+      }),
+      new CompressionPlugin({
+        algorithm: "brotliCompress",
+        compressionOptions: { level: 9 },
+        test: /\.js?$/,
       }),
       new BundleAnalyzerPlugin(),
     ],

@@ -1,4 +1,3 @@
-import "regenerator-runtime/runtime";
 import fastify from "fastify";
 import fastifySensible from "fastify-sensible";
 
@@ -11,6 +10,11 @@ import { initialize } from "./typeorm/initialize.js";
 
 const server = fastify({ logger: process.env.NODE_ENV === "development" });
 server.register(fastifySensible);
+server.register(
+  import("@fastify/compress"),
+  // Only support gzip
+  { requestEncodings: ["gzip"] },
+);
 
 server.addHook("onRequest", async (req, res) => {
   const repo = (await createConnection()).getRepository(User);

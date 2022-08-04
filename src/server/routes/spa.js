@@ -1,12 +1,11 @@
 import { join } from "path";
 
-import fastifyStatic from "fastify-static";
-
 /**
  * @type {import('fastify').FastifyPluginCallback}
  */
 export const spaRoute = async (fastify) => {
-  fastify.register(fastifyStatic, {
+  fastify.register(import("@fastify/static"), {
+    preCompressed: true,
     root: join(__dirname, "public"),
     wildcard: false,
   });

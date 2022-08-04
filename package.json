@@ -32,6 +32,7 @@
     "@typescript-eslint/parser": "^5.13.0",
     "babel-loader": "^8.2.3",
     "babel-plugin-styled-components": "^2.0.7",
+    "compression-webpack-plugin": "^10.0.0",
     "copy-webpack-plugin": "^10.2.0",
     "cross-env": "^7.0.3",
     "csstype": "^3.0.10",
@@ -61,10 +62,11 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
+    "@fastify/compress": "5.0.0",
+    "@fastify/static": "5.0.0",
     "dayjs": "^1.11.4",
     "fastify": "^3.25.3",
     "fastify-sensible": "^3.1.2",
-    "fastify-static": "^4.5.0",
     "framer-motion": "^6.2.8",
     "lodash-es": "^4.17.21",
     "modern-css-reset": "^1.4.0",
