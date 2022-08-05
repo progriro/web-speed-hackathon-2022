@@ -5,8 +5,6 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Zopfli = require("node-zopfli");
-// const BundleAnalyzerPlugin =
-//   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const nodeExternals = require("webpack-node-externals");
 
 function abs(...args) {
@@ -95,7 +93,6 @@ module.exports = [
         compressionOptions: { level: 9 },
         test: /\.js$/,
       }),
-      // new BundleAnalyzerPlugin(),
     ],
     resolve: {
       alias: {
