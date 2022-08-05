@@ -95,27 +95,54 @@ export const apiRoute = async (fastify) => {
   fastify.get("/races/:raceId", async (req, res) => {
     const repo = (await createConnection()).getRepository(Race);
 
-    const race = await repo.findOne(req.params.raceId, {
-      relations: ["entries", "entries.player"],
-    });
+    const entries = req.query.entries ?? false;
+    const player = req.query.player ?? false;
+
+    let relations = [];
+
+    if (entries && player) {
+      relations = ["entries", "entries.player"];
+    } else if (entries) {
+      relations = ["entries"];
+    }
+
+    const race = await repo.findOne(req.params.raceId, { relations });
 
     if (race === undefined) {
       throw fastify.httpErrors.notFound();
     }
 
-    const newRace = {
-      ...race,
-      entries: race.entries.map((e) => {
-        return {
-          ...e,
-          player: {
-            ...e.player,
-            image: e.player.image.replace(".jpg", ".avif"),
-          },
-        };
-      }),
-      image: race.image.replace(".jpg", "-live.avif"),
-    };
+    let newRace = {};
+
+    if (entries && player) {
+      newRace = {
+        ...race,
+        entries: race.entries.map((e) => {
+          return {
+            ...e,
+            player: {
+              ...e.player,
+              image: e.player.image.replace(".jpg", ".avif"),
+            },
+          };
+        }),
+        image: race.image.replace(".jpg", "-live.avif"),
+      };
+    } else if (entries) {
+      newRace = {
+        ...race,
+        entries: race.entries.map((e) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { player, ...rest } = e;
+          return { ...rest };
+        }),
+        image: race.image.replace(".jpg", "-live.avif"),
+      };
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { entries, ...rest } = race;
+      newRace = { ...rest, image: race.image.replace(".jpg", "-live.avif") };
+    }
 
     res.send(newRace);
   });

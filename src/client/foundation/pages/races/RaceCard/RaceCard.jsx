@@ -63,7 +63,14 @@ const PlayerOrderPlaceholder = styled.div`
 
 /** @type {React.VFC} */
 export const RaceCard = ({ raceId }) => {
-  const { data } = useFetch(`/api/races/${raceId}`, jsonFetcher);
+  const params = new URLSearchParams();
+  params.append("entries", true);
+  params.append("player", true);
+
+  const { data } = useFetch(
+    `/api/races/${raceId}?${params.toString()}`,
+    jsonFetcher,
+  );
 
   return (
     <Container>

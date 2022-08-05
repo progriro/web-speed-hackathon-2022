@@ -41,7 +41,7 @@ const TrimmedImagePlaceholder = styled.div`
 
 /** @type {React.VFC} */
 export const RaceResult = ({ raceId }) => {
-  const { data } = useFetch(`/api/races/${raceId}/entries`, jsonFetcher);
+  const { data } = useFetch(`/api/races/${raceId}`, jsonFetcher);
   const { data: ticketData } = useAuthorizedFetch(
     `/api/races/${raceId}/betting-tickets`,
     authorizedJsonFetcher,
