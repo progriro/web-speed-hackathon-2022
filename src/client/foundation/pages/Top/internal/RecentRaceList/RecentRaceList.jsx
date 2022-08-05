@@ -84,7 +84,7 @@ const Item = ({ index, race }) => {
           <Stack horizontal alignItems="center" gap={Space * 2}>
             <TrimmedImage
               height={100}
-              lazy={index > 2}
+              lazy={true}
               src={race.image}
               width={100}
             />
