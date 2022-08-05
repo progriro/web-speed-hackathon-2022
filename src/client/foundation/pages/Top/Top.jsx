@@ -9,12 +9,20 @@ import { Heading } from "../../components/typographies/Heading";
 import { useAuthorizedFetch } from "../../hooks/useAuthorizedFetch";
 import { useFetch } from "../../hooks/useFetch";
 import { Color, Radius, Space } from "../../styles/variables";
+import { range } from "../../utils/ArrayUtils";
 import { isSameDay } from "../../utils/DateUtils";
 import { authorizedJsonFetcher, jsonFetcher } from "../../utils/HttpUtils";
 
 import { ChargeDialog } from "./internal/ChargeDialog";
 import { HeroImage } from "./internal/HeroImage";
 import { RecentRaceList } from "./internal/RecentRaceList";
+
+const LIST_ITEM_PH_NUM = 5;
+
+const RecentRaceListItemPlaceholder = styled.div`
+  height: 148px;
+  width: 100%;
+`;
 
 /**
  * @param {Model.Race[]} todayRaces
@@ -106,12 +114,18 @@ export const Top = ({ date = dayjs().format("YYYY-MM-DD") }) => {
       <Spacer mt={Space * 2} />
       <section>
         <Heading as="h1">本日のレース</Heading>
-        {todayRaces && todayRaces.length > 0 && (
+        {todayRaces && todayRaces.length > 0 ? (
           <RecentRaceList>
             {todayRaces.map((race, i) => (
               <RecentRaceList.Item key={race.id} index={i} race={race} />
             ))}
           </RecentRaceList>
+        ) : (
+          <Stack gap={Space * 2}>
+            {range(0, LIST_ITEM_PH_NUM).map((i) => (
+              <RecentRaceListItemPlaceholder key={i} />
+            ))}
+          </Stack>
         )}
       </section>
 
