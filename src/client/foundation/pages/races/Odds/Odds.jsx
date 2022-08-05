@@ -45,22 +45,19 @@ const CalloutPlaceholder = styled.div`
 `;
 
 const OddsTablePlaceholder = styled.div`
-  height: 462px;
+  height: 500px;
   width: 100%;
-`;
-
-const HeadingPlaceholder = styled.div`
-  height: 48px;
-  margin-bottom: 8px;
-`;
-
-const PeriodPlaceholder = styled.div`
-  height: 24px;
+  margin-top: 56px;
+  border: 1px solid ${Color.mono[400]};
 `;
 
 const TrimmedImagePlaceholder = styled.div`
   height: 225px;
   width: 400px;
+`;
+
+const OddsRankingListPlaceholder = styled.div`
+  height: 800px;
 `;
 
 const Svg = styled.svg`
@@ -112,22 +109,13 @@ export const Odds = ({ raceId }) => {
   return (
     <Container>
       <Spacer mt={Space * 2} />
-      {entriesData ? (
-        <Heading as="h1">{entriesData.name}</Heading>
-      ) : (
-        <HeadingPlaceholder />
-      )}
-      {entriesData ? (
-        <p>
-          開始 {formatTime(entriesData.startAt)} 締切{" "}
-          {formatTime(entriesData.closeAt)}
-        </p>
-      ) : (
-        <PeriodPlaceholder />
-      )}
+      <Heading as="h1">{entriesData ? entriesData.name : "読み込み中"}</Heading>
+      <p>
+        開始 {entriesData ? formatTime(entriesData.startAt) : "--:--"} 締切{" "}
+        {entriesData ? formatTime(entriesData.closeAt) : "--:--"}
+      </p>
 
       <Spacer mt={Space * 2} />
-
       <Section dark shrink>
         <LiveBadge>Live</LiveBadge>
         <Spacer mt={Space * 2} />
@@ -142,9 +130,7 @@ export const Odds = ({ raceId }) => {
           <TrimmedImagePlaceholder />
         )}
       </Section>
-
       <Spacer mt={Space * 2} />
-
       <Section>
         <TabNav>
           <TabNav.Item to={`/races/${raceId}/race-card`}>出走表</TabNav.Item>
@@ -191,15 +177,16 @@ export const Odds = ({ raceId }) => {
         <Heading as="h2">人気順</Heading>
 
         <Spacer mt={Space * 2} />
-        {trifectaOddsData && (
+        {trifectaOddsData ? (
           <OddsRankingList
             isRaceClosed={isRaceClosed}
             odds={trifectaOddsData}
             onClickOdds={handleClickOdds}
           />
+        ) : (
+          <OddsRankingListPlaceholder />
         )}
       </Section>
-
       <TicketVendingModal
         isOpen={isOpen}
         odds={oddsKeyToBuy}

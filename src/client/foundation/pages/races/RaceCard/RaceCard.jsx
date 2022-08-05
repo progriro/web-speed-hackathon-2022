@@ -41,9 +41,28 @@ const TrimmedImagePlaceholder = styled.div`
   width: 400px;
 `;
 
+const EntryTablePlaceholder = styled.div`
+  height: 500px;
+`;
+
 const PlayerPictureListItemPlaceholder = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 132px;
   width: 100px;
+`;
+
+const PlayerPicturePlaceholder = styled.div`
+  height: 100px;
+  width: 100px;
+  border: 1px solid ${Color.mono[400]};
+`;
+
+const PlayerOrderPlaceholder = styled.div`
+  height: 24px;
+  width: 24px;
+  border: 1px solid ${Color.mono[400]};
 `;
 
 /** @type {React.VFC} */
@@ -102,12 +121,19 @@ export const RaceCard = ({ raceId }) => {
                 />
               ))
             : range(0, LIST_ITEM_PH_NUM).map((i) => (
-                <PlayerPictureListItemPlaceholder key={i} />
+                <PlayerPictureListItemPlaceholder key={i}>
+                  <PlayerPicturePlaceholder />
+                  <PlayerOrderPlaceholder />
+                </PlayerPictureListItemPlaceholder>
               ))}
         </PlayerPictureList>
 
         <Spacer mt={Space * 4} />
-        {data && <EntryTable entries={data.entries} />}
+        {data ? (
+          <EntryTable entries={data.entries} />
+        ) : (
+          <EntryTablePlaceholder />
+        )}
       </Section>
     </Container>
   );
