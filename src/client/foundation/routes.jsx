@@ -17,19 +17,19 @@ export const Routes = () => {
       <Top path="/:date" />
       <AsyncRoute
         getComponent={() =>
-          import("./pages/races/Race").then((module) => module.default)
+          import("./pages/races/Odds").then((module) => module.default)
         }
         path="/races/:raceId/odds"
       />
       <AsyncRoute
         getComponent={() =>
-          import("./pages/races/Race").then((module) => module.default)
+          import("./pages/races/RaceCard").then((module) => module.default)
         }
         path="/races/:raceId/race-card"
       />
       <AsyncRoute
         getComponent={() =>
-          import("./pages/races/Race").then((module) => module.default)
+          import("./pages/races/RaceResult").then((module) => module.default)
         }
         path="/races/:raceId/result"
       />
