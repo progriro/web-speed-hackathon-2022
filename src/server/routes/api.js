@@ -137,7 +137,7 @@ export const apiRoute = async (fastify) => {
         const newFileName = entry.player.image.replace(".jpg", ".avif");
         return { ...entry, player: { ...entry.player, image: newFileName } };
       }),
-      image: race.image.replace(".jpg", ".avif"),
+      image: race.image.replace(".jpg", "-live.avif"),
     };
 
     res.send(newRace);

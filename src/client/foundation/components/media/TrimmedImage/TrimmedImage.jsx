@@ -47,7 +47,6 @@ export const TrimmedImage = ({ height, lazy, src, width }) => {
       $width={width}
       loading={lazy ? "lazy" : "eager"}
       src={dataUrl}
-      width={width}
     />
   );
 };
