@@ -21,6 +21,8 @@ const LIST_ITEM_PH_NUM = 5;
 const RecentRaceListItemPlaceholder = styled.div`
   height: 148px;
   width: 100%;
+  background: ${Color.mono[0]};
+  border-radius: ${Radius.MEDIUM};
 `;
 
 const ChargeButton = styled.button`

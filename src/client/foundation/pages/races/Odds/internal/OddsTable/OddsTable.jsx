@@ -1,5 +1,5 @@
 import { range, without } from "lodash-es";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 
 import { BaseButton } from "../../../../../components/buttons/BaseButton";
@@ -64,6 +64,12 @@ const InactiveBuyButton = styled.div`
   width: 100%;
 `;
 
+const OddsTablePlaceholder = styled.div`
+  height: 500px;
+  width: 100%;
+  border: 1px solid ${Color.mono[400]};
+`;
+
 /**
  * @param {number} second
  * @param {number} third
@@ -87,79 +93,99 @@ export const OddsTable = ({ entries, isRaceClosed, odds, onClickOdds }) => {
     setFirstKey(parseInt(e.currentTarget.value, 10));
   }, []);
 
-  const headNumbers = without(range(1, entries.length + 1), firstKey);
+  const headNumbers = useMemo(() => {
+    if (!entries) return range(0, 11);
+    return without(range(1, entries.length + 1), firstKey);
+  }, [entries, firstKey]);
 
-  const filteredOdds = odds.filter((item) => item.key[0] === firstKey);
-  const oddsMap = filteredOdds.reduce((acc, cur) => {
-    const [, second, third] = cur.key;
-    acc[mapKey(second, third)] = cur;
-    return acc;
-  }, {});
+  const filteredOdds = useMemo(
+    () => odds?.filter((item) => item.key[0] === firstKey),
+    [odds, firstKey],
+  );
+
+  const oddsMap = useMemo(
+    () =>
+      filteredOdds?.reduce((acc, cur) => {
+        const [, second, third] = cur.key;
+        acc[mapKey(second, third)] = cur;
+        return acc;
+      }, {}),
+    [filteredOdds],
+  );
 
   return (
     <div>
       <Stack horizontal>
         <RankLabel>1位軸</RankLabel>
         <select onChange={handleChange} value={firstKey}>
-          {entries.map((entry) => (
-            <option key={entry.id} value={entry.number}>
-              {entry.number}. {entry.player.name}
-            </option>
-          ))}
+          {entries ? (
+            entries.map((entry) => (
+              <option key={entry.id} value={entry.number}>
+                {entry.number}. {entry.player.name}
+              </option>
+            ))
+          ) : (
+            <option value="選択してください">選択してください</option>
+          )}
         </select>
       </Stack>
 
       <Spacer mt={Space * 2} />
-      <ScrollWrapper>
-        <div>
-          <Table>
-            <thead>
-              <tr>
-                <th width="64px">2位</th>
-                <th width="32px"></th>
 
-                {headNumbers.map((second) => (
-                  <th key={second} width="auto">
-                    {second}
-                  </th>
-                ))}
-              </tr>
-            </thead>
+      {oddsMap ? (
+        <ScrollWrapper>
+          <div>
+            <Table>
+              <thead>
+                <tr>
+                  <th width="64px">2位</th>
+                  <th width="32px"></th>
 
-            <tbody>
-              {headNumbers.map((third, i) => (
-                <tr key={third}>
-                  {i === 0 && <th rowSpan={headNumbers.length}>3位</th>}
-
-                  <th>{third}</th>
-
-                  {headNumbers.map((second) => {
-                    const item = oddsMap[mapKey(second, third)];
-
-                    return (
-                      <td key={second} width="auto">
-                        {second !== third ? (
-                          isRaceClosed ? (
-                            <InactiveBuyButton>
-                              <OddsMarker odds={item.odds} />
-                            </InactiveBuyButton>
-                          ) : (
-                            <BuyButton onClick={() => onClickOdds(item)}>
-                              <OddsMarker odds={item.odds} />
-                            </BuyButton>
-                          )
-                        ) : (
-                          <BuyButton disabled>-</BuyButton>
-                        )}
-                      </td>
-                    );
-                  })}
+                  {headNumbers.map((second) => (
+                    <th key={second} width="auto">
+                      {second}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
-      </ScrollWrapper>
+              </thead>
+
+              <tbody>
+                {headNumbers.map((third, i) => (
+                  <tr key={third}>
+                    {i === 0 && <th rowSpan={headNumbers.length}>3位</th>}
+
+                    <th>{third}</th>
+
+                    {headNumbers.map((second) => {
+                      const item = oddsMap[mapKey(second, third)];
+
+                      return (
+                        <td key={second} width="auto">
+                          {second !== third ? (
+                            isRaceClosed ? (
+                              <InactiveBuyButton>
+                                <OddsMarker odds={item.odds} />
+                              </InactiveBuyButton>
+                            ) : (
+                              <BuyButton onClick={() => onClickOdds(item)}>
+                                <OddsMarker odds={item.odds} />
+                              </BuyButton>
+                            )
+                          ) : (
+                            <BuyButton disabled>-</BuyButton>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </ScrollWrapper>
+      ) : (
+        <OddsTablePlaceholder />
+      )}
     </div>
   );
 };

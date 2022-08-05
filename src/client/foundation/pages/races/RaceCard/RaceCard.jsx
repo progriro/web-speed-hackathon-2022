@@ -16,7 +16,7 @@ import { jsonFetcher } from "../../../utils/HttpUtils";
 import { EntryTable } from "./internal/EntryTable";
 import { PlayerPictureList } from "./internal/PlayerPictureList";
 
-const LIST_ITEM_PH_NUM = 10;
+const LIST_ITEM_PH_NUM = 11;
 
 const LiveBadge = styled.span`
   background: ${Color.red};
@@ -39,10 +39,6 @@ const PeriodPlaceholder = styled.div`
 const TrimmedImagePlaceholder = styled.div`
   height: 225px;
   width: 400px;
-`;
-
-const EntryTablePlaceholder = styled.div`
-  height: 500px;
 `;
 
 const PlayerPictureListItemPlaceholder = styled.div`
@@ -129,11 +125,8 @@ export const RaceCard = ({ raceId }) => {
         </PlayerPictureList>
 
         <Spacer mt={Space * 4} />
-        {data ? (
-          <EntryTable entries={data.entries} />
-        ) : (
-          <EntryTablePlaceholder />
-        )}
+
+        <EntryTable entries={data?.entries} />
       </Section>
     </Container>
   );

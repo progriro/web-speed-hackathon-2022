@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { Color, FontSize, Space } from "../../../../../styles/variables";
+import { range } from "../../../../../utils/ArrayUtils";
 
 const Wrapper = styled.div`
   overflow-x: auto;
@@ -105,29 +106,51 @@ export const EntryTable = ({ entries }) => {
           </tr>
         </thead>
         <tbody>
-          {entries.map((entry) => (
-            <tr key={entry.id}>
-              <TableCell>{entry.number}</TableCell>
-              <TableCell $bold $align="left">
-                {entry.player.name}
-              </TableCell>
-              <TableCell>{entry.predictionMark}</TableCell>
+          {entries
+            ? entries.map((entry) => (
+                <tr key={entry.id}>
+                  <TableCell>{entry.number}</TableCell>
+                  <TableCell $bold $align="left">
+                    {entry.player.name}
+                  </TableCell>
+                  <TableCell>{entry.predictionMark}</TableCell>
 
-              <TableCell>{entry.rockWin}</TableCell>
-              <TableCell>{entry.scissorsWin}</TableCell>
-              <TableCell>{entry.paperWin}</TableCell>
+                  <TableCell>{entry.rockWin}</TableCell>
+                  <TableCell>{entry.scissorsWin}</TableCell>
+                  <TableCell>{entry.paperWin}</TableCell>
 
-              <TableCell>{entry.first}</TableCell>
-              <TableCell>{entry.second}</TableCell>
-              <TableCell>{entry.third}</TableCell>
-              <TableCell>{entry.others}</TableCell>
+                  <TableCell>{entry.first}</TableCell>
+                  <TableCell>{entry.second}</TableCell>
+                  <TableCell>{entry.third}</TableCell>
+                  <TableCell>{entry.others}</TableCell>
 
-              <TableCell>{entry.firstRate.toFixed(1)}</TableCell>
-              <TableCell>{entry.thirdRate.toFixed(1)}</TableCell>
+                  <TableCell>{entry.firstRate.toFixed(1)}</TableCell>
+                  <TableCell>{entry.thirdRate.toFixed(1)}</TableCell>
 
-              <TableCell $align="left">{entry.comment}</TableCell>
-            </tr>
-          ))}
+                  <TableCell $align="left">{entry.comment}</TableCell>
+                </tr>
+              ))
+            : range(0, 11).map((i) => (
+                <tr key={i}>
+                  <TableCell>{i + 1}</TableCell>
+                  <TableCell $bold $align="left" />
+                  <TableCell />
+
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+
+                  <TableCell />
+                  <TableCell />
+
+                  <TableCell $align="left" />
+                </tr>
+              ))}
         </tbody>
       </Table>
     </Wrapper>
