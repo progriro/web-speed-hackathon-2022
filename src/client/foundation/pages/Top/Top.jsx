@@ -10,7 +10,6 @@ import { useAuthorizedFetch } from "../../hooks/useAuthorizedFetch";
 import { useFetch } from "../../hooks/useFetch";
 import { Color, Radius, Space } from "../../styles/variables";
 import { range } from "../../utils/ArrayUtils";
-import { isSameDay } from "../../utils/DateUtils";
 import { authorizedJsonFetcher, jsonFetcher } from "../../utils/HttpUtils";
 
 import { ChargeDialog } from "./internal/ChargeDialog";
@@ -23,26 +22,6 @@ const RecentRaceListItemPlaceholder = styled.div`
   height: 148px;
   width: 100%;
 `;
-
-/**
- * @param {Model.Race[]} todayRaces
- * @returns {string | null}
- */
-function useHeroImage(todayRaces) {
-  const firstRaceId = todayRaces[0]?.id;
-  const url =
-    firstRaceId !== undefined
-      ? `/api/hero?firstRaceId=${firstRaceId}`
-      : "/api/hero";
-  const { data } = useFetch(url, jsonFetcher);
-
-  if (firstRaceId === undefined || data === null) {
-    return null;
-  }
-
-  const imageUrl = `${data.url}?${data.hash}`;
-  return imageUrl;
-}
 
 const ChargeButton = styled.button`
   background: ${Color.mono[700]};
@@ -64,7 +43,16 @@ export const Top = ({ date = dayjs().format("YYYY-MM-DD") }) => {
     authorizedJsonFetcher,
   );
 
-  const { data: raceData } = useFetch("/api/races", jsonFetcher);
+  const { data: HeroData } = useFetch("/api/hero", jsonFetcher);
+
+  const params = new URLSearchParams();
+  params.append("since", dayjs(date).startOf("day").toISOString());
+  params.append("until", dayjs(date).endOf("day").toISOString());
+
+  const { data: raceData } = useFetch(
+    `/api/races?${params.toString()}`,
+    jsonFetcher,
+  );
 
   const handleClickChargeButton = useCallback(() => {
     setIsOpen(true);
@@ -78,23 +66,10 @@ export const Top = ({ date = dayjs().format("YYYY-MM-DD") }) => {
     revalidate();
   }, [revalidate]);
 
-  const todayRaces =
-    raceData != null
-      ? [...raceData.races]
-          .sort(
-            (/** @type {Model.Race} */ a, /** @type {Model.Race} */ b) =>
-              dayjs(a.startAt) - dayjs(b.startAt),
-          )
-          .filter((/** @type {Model.Race} */ race) =>
-            isSameDay(race.startAt, date),
-          )
-      : [];
-  const heroImageUrl = useHeroImage(todayRaces);
-
   return (
     <Container>
       <div style={{ aspectRatio: "auto 1024 / 735", backgroundColor: "#fff" }}>
-        {heroImageUrl && <HeroImage url={heroImageUrl} />}
+        {HeroData && <HeroImage url={HeroData.url} />}
       </div>
 
       <Spacer mt={Space * 2} />
@@ -114,9 +89,9 @@ export const Top = ({ date = dayjs().format("YYYY-MM-DD") }) => {
       <Spacer mt={Space * 2} />
       <section>
         <Heading as="h1">本日のレース</Heading>
-        {todayRaces && todayRaces.length > 0 ? (
+        {raceData && raceData.races.length > 0 ? (
           <RecentRaceList>
-            {todayRaces.map((race, i) => (
+            {raceData.races.map((race, i) => (
               <RecentRaceList.Item key={race.id} index={i} race={race} />
             ))}
           </RecentRaceList>
