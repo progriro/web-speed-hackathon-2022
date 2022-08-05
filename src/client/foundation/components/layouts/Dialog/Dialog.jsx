@@ -16,11 +16,11 @@ const StyledDialog = styled.dialog`
  * @type {object}
  * @property {boolean} isOpen
  * @property {Function} onClose
- * @property {Function} setZenginCode
+ * @property {Function} onOpen
  */
 
 /** @type {React.FC<Props>} */
-export const Dialog = ({ children, isOpen, onClose, setZenginCode }) => {
+export const Dialog = ({ children, isOpen, onClose, onOpen }) => {
   const dialogRef = React.useRef();
 
   React.useEffect(() => {
@@ -29,17 +29,11 @@ export const Dialog = ({ children, isOpen, onClose, setZenginCode }) => {
     if (isOpen) {
       // @see https://developer.mozilla.org/ja/docs/Web/HTML/Element/dialog
       dialogRef.current.showModal();
-      import("zengin-code")
-        .then((zenginCode) => {
-          setZenginCode(zenginCode);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      onOpen?.();
     } else {
       dialogRef.current.close();
     }
-  }, [isOpen, setZenginCode]);
+  }, [isOpen, onOpen]);
 
   return (
     <StyledDialog ref={dialogRef} onClose={onClose}>

@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { EntryCombination } from "../../../../../components/displays/EntryCombination";
@@ -24,10 +24,19 @@ const ErrorText = styled.p`
  * @type {object}
  * @property {string} raceId
  * @property {number[]} odds
+ * @property {boolean} isOpen
+ * @property {Function} onClose
+ * @property {Function} onOpen
  */
 
-/** @type {React.ForwardRefExoticComponent<{Props>} */
-export const TicketVendingModal = forwardRef(({ odds, raceId }, ref) => {
+/** @type {React.VFC<Props>} */
+export const TicketVendingModal = ({
+  isOpen,
+  odds,
+  onClose,
+  onOpen,
+  raceId,
+}) => {
   const { loggedIn } = useAuth();
   const [buyTicket, buyTicketResult] = useMutation(
     `/api/races/${raceId}/betting-tickets`,
@@ -47,6 +56,7 @@ export const TicketVendingModal = forwardRef(({ odds, raceId }, ref) => {
       setError("");
 
       if (e.currentTarget.returnValue === CANCEL) {
+        onClose();
         return;
       }
 
@@ -54,8 +64,10 @@ export const TicketVendingModal = forwardRef(({ odds, raceId }, ref) => {
         key: odds,
         type: "trifecta",
       });
+
+      onClose();
     },
-    [odds, buyTicket],
+    [buyTicket, odds, onClose],
   );
 
   useEffect(() => {
@@ -70,21 +82,21 @@ export const TicketVendingModal = forwardRef(({ odds, raceId }, ref) => {
       return;
     }
 
-    ref.current?.showModal();
+    onOpen();
 
-    if (err.response?.status === 412) {
+    if (err.status === 412) {
       setError("残高が不足しています");
       return;
     }
 
     setError(err.message);
     console.error(err);
-  }, [buyTicketResult, revalidate, ref]);
+  }, [buyTicketResult, revalidate, onOpen]);
 
   const shouldShowForm = loggedIn && userData !== null && odds !== null;
 
   return (
-    <Dialog ref={ref} onClose={handleCloseDialog}>
+    <Dialog isOpen={isOpen} onClose={handleCloseDialog}>
       <Heading as="h1">拳券の購入</Heading>
 
       <Spacer mt={Space * 2} />
@@ -119,6 +131,6 @@ export const TicketVendingModal = forwardRef(({ odds, raceId }, ref) => {
       </form>
     </Dialog>
   );
-});
+};
 
 TicketVendingModal.displayName = "TicketVendingModal";

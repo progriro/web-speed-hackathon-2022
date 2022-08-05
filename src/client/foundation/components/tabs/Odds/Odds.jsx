@@ -48,7 +48,15 @@ const Svg = styled.svg`
 export const Odds = ({ raceId }) => {
   const { data } = useFetch(`/api/races/${raceId}`, jsonFetcher);
   const [oddsKeyToBuy, setOddsKeyToBuy] = useState(null);
-  const modalRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   const handleClickOdds = useCallback(
     /**
@@ -56,9 +64,9 @@ export const Odds = ({ raceId }) => {
      */
     (odds) => {
       setOddsKeyToBuy(odds.key);
-      modalRef.current?.showModal();
+      handleOpen();
     },
-    [],
+    [handleOpen],
   );
 
   const isRaceClosed = useMemo(() => {
@@ -113,7 +121,13 @@ export const Odds = ({ raceId }) => {
         />
       )}
 
-      <TicketVendingModal ref={modalRef} odds={oddsKeyToBuy} raceId={raceId} />
+      <TicketVendingModal
+        isOpen={isOpen}
+        odds={oddsKeyToBuy}
+        onClose={handleClose}
+        onOpen={handleOpen}
+        raceId={raceId}
+      />
     </>
   );
 };

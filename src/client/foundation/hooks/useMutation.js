@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 
 import { useAuth } from "../contexts/AuthContext";
-import { createFetchError } from "../utils/HttpUtils";
 
 /**
  * @typedef {UseMutationOptions}
@@ -58,7 +57,7 @@ export function useMutation(apiPath, { auth, method }) {
               },
           method,
         });
-        if (!res.ok) throw createFetchError(res);
+        if (!res.ok) throw res;
         const resData = await res.json();
 
         setResult((cur) => ({

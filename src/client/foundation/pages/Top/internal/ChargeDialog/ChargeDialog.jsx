@@ -91,6 +91,17 @@ export const ChargeDialog = forwardRef(({ isOpen, onClose, onComplete }) => {
     ],
   );
 
+  const handleOpenDialog = useCallback(() => {
+    // if (!isOpen) return;
+    import("zengin-code")
+      .then((zenginCode) => {
+        setZenginCode(zenginCode);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const bankList = Object.entries(zenginCode).map(([code, { name }]) => ({
     code,
     name,
@@ -102,7 +113,8 @@ export const ChargeDialog = forwardRef(({ isOpen, onClose, onComplete }) => {
     <Dialog
       isOpen={isOpen}
       onClose={handleCloseDialog}
-      setZenginCode={setZenginCode}
+      onOpen={handleOpenDialog}
+      // setZenginCode={setZenginCode}
     >
       <section>
         <Heading as="h1">チャージ</Heading>
