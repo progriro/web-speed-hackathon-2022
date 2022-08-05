@@ -17,7 +17,7 @@ export const RaceResult = ({ raceId }) => {
   );
 
   return (
-    <>
+    <div>
       <Spacer mt={Space * 4} />
       <Heading as="h2">購入した買い目</Heading>
 
@@ -33,6 +33,6 @@ export const RaceResult = ({ raceId }) => {
 
       <Spacer mt={Space * 2} />
       <RaceResultSection />
-    </>
+    </div>
   );
 };
