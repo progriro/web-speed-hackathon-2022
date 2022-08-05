@@ -10,11 +10,7 @@ import { initialize } from "./typeorm/initialize.js";
 
 const server = fastify({ logger: process.env.NODE_ENV === "development" });
 server.register(fastifySensible);
-server.register(
-  import("@fastify/compress"),
-  // Only support gzip
-  { requestEncodings: ["gzip"] },
-);
+server.register(import("@fastify/compress"));
 
 server.addHook("onRequest", async (req, res) => {
   const repo = (await createConnection()).getRepository(User);
