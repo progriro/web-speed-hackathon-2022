@@ -14,12 +14,7 @@ export const Routes = () => {
   return (
     <Router onChange={onChange}>
       <Top path="/" />
-      <AsyncRoute
-        getComponent={() =>
-          import("./pages/Top").then((module) => module.default)
-        }
-        path="/:date"
-      />
+      <Top path="/:date" />
       <AsyncRoute
         getComponent={() =>
           import("./pages/races/Race").then((module) => module.default)
