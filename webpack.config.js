@@ -5,8 +5,8 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Zopfli = require("node-zopfli");
-const BundleAnalyzerPlugin =
-  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin =
+//   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const nodeExternals = require("webpack-node-externals");
 
 function abs(...args) {
@@ -95,7 +95,7 @@ module.exports = [
         compressionOptions: { level: 9 },
         test: /\.js$/,
       }),
-      new BundleAnalyzerPlugin(),
+      // new BundleAnalyzerPlugin(),
     ],
     resolve: {
       alias: {
@@ -113,7 +113,7 @@ module.exports = [
     devtool: NODE_ENV === "production" ? false : "inline-source-map",
     entry: path.join(SRC_ROOT, "server/index.js"),
     externals: [nodeExternals()],
-    mode: process.env.NODE_ENV,
+    mode: "development",
     module: {
       rules: [
         {
